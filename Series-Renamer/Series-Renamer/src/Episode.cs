@@ -66,8 +66,8 @@ namespace Series_Renamer.src
         }
 
         private void getSerie()
-        {
-            Regex regex = new Regex(@"(?<serie>[A-Za-z]*\.{1}[A-Za-z]*)");
+        {   //get everything till Season/Episode Information: (?:(?!\.S\d{1,2}E\d{1,2}).)*
+            Regex regex = new Regex(@"(?<serie>(?<=Z:\\JDownload\\)(.*)(?=\.S\d{1,2}E\d{1,2}))");
             Match match = regex.Match(this.fullPath);
 
             if (match.Success)
