@@ -35,7 +35,7 @@ namespace Series_Renamer
                 foreach (Episode ep in files)
                 {
                     CopyFile cp = new CopyFile(ep);
-                    cp.createFile(false);
+                    cp.createFile(true);
                 }
             }
             catch (Exception e)
