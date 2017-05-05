@@ -48,7 +48,7 @@ namespace Series_Renamer.src
 
         private void getEpisode()
         {
-            Regex regex = new Regex(@"S(?<season>\d{1,2})E(?<episode>\d{1,2})");
+            Regex regex = new Regex(@"[sS](?<season>\d{1,2})[eE](?<episode>\d{1,2})");
             Match match = regex.Match(this.fullPath);
             
             if (match.Success)
