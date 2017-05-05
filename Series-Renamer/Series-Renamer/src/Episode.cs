@@ -48,7 +48,7 @@ namespace Series_Renamer.src
 
         private void getEpisode()
         {
-            Regex regex = new Regex(@"S(?<season>\d{1,2})E(?<episode>\d{1,2})");
+            Regex regex = new Regex(@"[sS](?<season>\d{1,2})[eE](?<episode>\d{1,2})");
             Match match = regex.Match(this.fullPath);
             
             if (match.Success)
@@ -66,8 +66,10 @@ namespace Series_Renamer.src
         }
 
         private void getSerie()
-        {   //get everything till Season/Episode Information: (?:(?!\.S\d{1,2}E\d{1,2}).)*
-            Regex regex = new Regex(@"(?<serie>(?<=Z:\\JDownload\\)(.*)(?=\.S\d{1,2}E\d{1,2}))");
+        {
+            //get everything till Season/Episode Information: (?:(?!\.S\d{1,2}E\d{1,2}).)*
+            
+            Regex regex = new Regex(@"(?<serie>(?<=" + Regex.Escape(ConfigurationManager.AppSettings["JdownloadFolder"]) + @"\\)(.*)(?=\.S\d{1,2}E\d{1,2}))");
             Match match = regex.Match(this.fullPath);
 
             if (match.Success)

@@ -52,6 +52,16 @@ namespace Series_Renamer.src
                 Console.WriteLine("{0} not found.. skipping", srcPath);
                 return;
             }
+            else
+            {
+                FileInfo srcFileInfoTmp = new FileInfo(srcPath);
+                if (srcFileInfoTmp.Length < 10)
+                {
+                    Console.WriteLine("{0} File is empty (maybe unzip in progress", srcPath);
+                    return;
+                }
+
+            }
 
             FileInfo srcFileInfo = new FileInfo(srcPath);
             string message = string.Format("Copy:\t\t");
@@ -120,12 +130,24 @@ namespace Series_Renamer.src
         {
             string srcPath = ep.path;
 
-            if(string.IsNullOrEmpty(Directory.GetFiles(srcPath).OfType<string>().ToList().FirstOrDefault(s => s.Contains(".txt"))))
+            if(string.IsNullOrEmpty(Directory.GetFiles(srcPath).OfType<string>().ToList().FirstOrDefault(s => s.Contains(".mkv"))))
             {
                 try
                 {
                     Console.WriteLine("Delete folder:\t" + srcPath + "\n-------------------------------------------\n");
                     Directory.Delete(srcPath, true);
+                }catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }else
+            {
+                try
+                {
+                    {
+                        Console.WriteLine("Delete file:\t {0} \n-------------------------------------------\n", ep.fullPath);
+                        File.Delete(ep.fullPath);
+                    }
                 }catch(Exception e)
                 {
                     Console.WriteLine(e.Message);
