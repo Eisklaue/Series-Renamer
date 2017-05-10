@@ -11,14 +11,21 @@ namespace Series_Renamer
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
+            if ( args.Length != 1)
+            {
+                Console.WriteLine("Usage:\tSeries-Renamer.exe <file extension>\n\nExample:\tSeries-Renamer.exe mkv");
+                return 1;
+            }
+
+            string fileExtension = "." + args[0];
             string folder = ConfigurationManager.AppSettings["JdownloadFolder"];
             int i = 0;
             List<Episode> files = new List<Episode>();
             try
             {
-                foreach (string file in Directory.EnumerateFiles(folder, "*.mkv", SearchOption.AllDirectories))
+                foreach (string file in Directory.EnumerateFiles(folder, "*" + fileExtension, SearchOption.AllDirectories))
                 {
                     files.Add(new Episode(file, i));
                     i++;
@@ -35,13 +42,15 @@ namespace Series_Renamer
                 foreach (Episode ep in files)
                 {
                     CopyFile cp = new CopyFile(ep);
-                    cp.createFile(true);
+                    cp.createFile(true, fileExtension);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+
+            return 0;
         }
 
 

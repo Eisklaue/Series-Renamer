@@ -10,14 +10,16 @@ namespace Series_Renamer.src
     class CopyFile
     {
         private Episode ep;
+        private string fileExtension;
 
         public CopyFile(Episode ep)
         {
             this.ep = ep;
         }
 
-        public void createFile(bool copy)
+        public void createFile(bool copy, string fileExtension)
         {
+            this.fileExtension = fileExtension;
             createFolder();
             if (copy)
             {
@@ -45,7 +47,7 @@ namespace Series_Renamer.src
         private void copyFile(Action<string, long, long> reportProgress, int blockSizeToRead = 4096)
         {
             string srcPath = ep.fullPath;
-            string dstPath = ep.folder + "\\" + ep.episode + ".mkv";
+            string dstPath = ep.folder + "\\" + ep.episode + this.fileExtension;
 
             if (!File.Exists(srcPath))
             {
@@ -68,7 +70,7 @@ namespace Series_Renamer.src
 
             if (File.Exists(dstPath))
             {
-                dstPath = ep.folder + "\\" + ep.episode + ep.id + ".mkv";
+                dstPath = ep.folder + "\\" + ep.episode + ep.id + this.fileExtension;
             }
 
             byte[] buffer = new byte[blockSizeToRead];
@@ -95,7 +97,7 @@ namespace Series_Renamer.src
         private void moveFile()
         {
             string srcPath = ep.fullPath;
-            string dstPath = ep.folder + "\\" + ep.episode + ".mkv";
+            string dstPath = ep.folder + "\\" + ep.episode + this.fileExtension;
 
 
             if (!File.Exists(dstPath))
@@ -120,8 +122,8 @@ namespace Series_Renamer.src
                 }
                 else
                 {
-                    Console.WriteLine("Move file:\t" + srcPath + "\n" + "to:\t\t" + ep.folder + "\\" + ep.episode + ep.id + ".mkv");
-                    File.Move(srcPath, ep.folder + "\\" + ep.episode + ep.id + ".mkv");
+                    Console.WriteLine("Move file:\t" + srcPath + "\n" + "to:\t\t" + ep.folder + "\\" + ep.episode + ep.id + this.fileExtension);
+                    File.Move(srcPath, ep.folder + "\\" + ep.episode + ep.id + this.fileExtension);
                 }
             }
         }
@@ -130,7 +132,7 @@ namespace Series_Renamer.src
         {
             string srcPath = ep.path;
 
-            if(string.IsNullOrEmpty(Directory.GetFiles(srcPath).OfType<string>().ToList().FirstOrDefault(s => s.Contains(".mkv"))))
+            if(string.IsNullOrEmpty(Directory.GetFiles(srcPath).OfType<string>().ToList().FirstOrDefault(s => s.Contains(this.fileExtension))))
             {
                 try
                 {
